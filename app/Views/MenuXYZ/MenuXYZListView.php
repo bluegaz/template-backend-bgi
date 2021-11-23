@@ -16,11 +16,19 @@
     <?= link_tag(RES_PLUGIN . '/toastr/toastr.min.css') ?>
 
     <?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
+
+    <style>
+        /**
+            Vertical scrollbar-nya dibikin muncul terus
+            biar gak ganggu dimensi/size/apalah itu
+         */
+        body {
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 
 <body class="text-sm content-iframe">
-
-
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -53,7 +61,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Filter</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" onclick="document.getElementById('filter-general').reset()">
+                                <button type="button" class="btn btn-tool" onclick="document.getElementById('filter-xyz').reset()">
                                     Reset
                                 </button>
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -62,35 +70,35 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <?= form_open('', "id='filter-general'") ?>
+                            <?= form_open('', "id='filter-xyz'") ?>
                             <div class="form-group">
                                 <label for="filter1" mb-0>Filter 1</label>
-                                <input id="filter1" name="filter1" class="form-control form-control-sm" type="text" placeholder="Filter 1">
+                                <input id="filter1" class="form-control form-control-sm" type="text" autocomplete="off" placeholder="Filter 1">
                             </div>
                             <div class="form-group">
                                 <label for="filter2">Filter 2</label>
-                                <select id="filter2" name="filter2" class="form-control form-control-sm">
-                                    <option selected disabled value="">Pilih...</option>
-                                    <option>option 1</option>
-                                    <option>option 2</option>
+                                <select id="filter2" class="form-control form-control-sm">
+                                    <option selected disabled>Pilih...</option>
+                                    <option value="opsi1">option 1</option>
+                                    <option value="opsi2">option 2</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="filter3">Filter 3</label>
-                                <select id="filter3" name="filter3" class="form-control form-control-sm">
+                                <select id="filter3" class="form-control form-control-sm">
                                     <option selected value="">Semua</option>
-                                    <option>option 1</option>
-                                    <option>option 2</option>
+                                    <option value="opsi1">option 1</option>
+                                    <option value="opsi2">option 2</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="tanggal_single">Tanggal Single</label>
-                                <input id="tanggal_single" name="tanggal_single" class="form-control form-control-sm" type="text" placeholder="Tanggal Single" readonly>
+                                <label for="date-single">Tanggal Single</label>
+                                <input id="date-single" class="form-control form-control-sm" type="text" placeholder="Tanggal Single" readonly>
                                 <small class="form-text text-muted mt-0">yyyy-mm-dd</small>
                             </div>
                             <div class="form-group">
-                                <label for="tanggal_range">Tanggal Range</label>
-                                <input id="tanggal_range" name="tanggal_range" class="form-control form-control-sm" type="text" placeholder="Tanggal Range" readonly>
+                                <label for="date-range">Tanggal Range</label>
+                                <input id="date-range" class="form-control form-control-sm" type="text" placeholder="Tanggal Range" readonly>
                                 <small class="form-text text-muted mt-0">yyyy-mm-dd s/d yyyy-mm-dd</small>
                             </div>
                             <?= form_close() ?>
