@@ -17,7 +17,7 @@ class MenuXYZ extends Base
     public function list()
     {        
         $formatters = [
-            'id' => 'uuid',
+            'uuid' => 'uuid',
             'name'  => 'name',
             'email'  => 'email',
             'phone'  => 'phoneNumber',
@@ -27,7 +27,14 @@ class MenuXYZ extends Base
 
         $fabricator = new \CodeIgniter\Test\Fabricator(App\Models\Test::class, $formatters, "id_ID");
 
-        echo json_encode($fabricator->make(23));
+        $fake = [
+            "draw" => $_POST['draw'],
+            "recordsTotal" => 23,
+            "recordsFiltered" => 23,
+            "data" => $fabricator->make(10),
+        ];
+
+        echo json_encode($fake);
     }
 
     public function form($act)
