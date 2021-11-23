@@ -15,7 +15,18 @@ class MenuXYZ extends Base
     }
 
     public function list()
-    {        
+    {
+        $payload = [
+            "cond" => [
+                "filter1" => $this->request->getPost("filter1"),
+                "filter2" => $this->request->getPost("filter2"),
+                "filter3" => $this->request->getPost("filter3"),
+                "date_single" => $this->request->getPost("date_range"),
+                "date_range" => $this->request->getPost("date_single"),
+            ],
+            "limit" => "{$this->request->getPost('start')}, {$this->request->getPost('length')}"
+        ];
+
         $formatters = [
             'uuid' => 'uuid',
             'name'  => 'name',
@@ -28,7 +39,7 @@ class MenuXYZ extends Base
         $fabricator = new \CodeIgniter\Test\Fabricator(App\Models\Test::class, $formatters, "id_ID");
 
         $fake = [
-            "draw" => $_POST['draw'],
+            "draw" => $this->request->getPost("draw"),
             "recordsTotal" => 23,
             "recordsFiltered" => 23,
             "data" => $fabricator->make(10),

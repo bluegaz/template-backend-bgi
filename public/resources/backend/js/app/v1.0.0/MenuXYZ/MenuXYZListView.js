@@ -4,7 +4,13 @@
     "use strict"
 
     const baseURL = "/back-end/menu-xyz"
+    const E_FORM_FILTER = "#filter-xyz"
     const E_TABLE = "#table-xyz"
+    const E_F_1 = "#filter1"
+    const E_F_2 = "#filter2"
+    const E_F_3 = "#filter3"
+    const E_F_DATE_SINGLE = "#date-single"
+    const E_F_DATE_RANGE = "#date-range"
     let dt
     let dtDetail = []
 
@@ -28,7 +34,7 @@
     }
 
     const initDaterangeHandler = () => {
-        $('#tanggal_single').daterangepicker({
+        $(E_F_DATE_SINGLE).daterangepicker({
             singleDatePicker: true,
             autoUpdateInput: false,
             showDropdowns: true,
@@ -40,10 +46,10 @@
                 format: "YYYY-MM-DD"
             }
         }, function (start, end, label) {
-            $('#tanggal_single').val(start.format('YYYY-MM-DD'))
+            $(E_F_DATE_SINGLE).val(start.format('YYYY-MM-DD'))
         })
 
-        $('#tanggal_range').daterangepicker({
+        $(E_F_DATE_RANGE).daterangepicker({
             autoUpdateInput: false,
             drops: 'up',
             autoApply: true,
@@ -56,7 +62,7 @@
                 'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },
         }, function (start, end, label) {
-            $('#tanggal_range').val(start.format('YYYY-MM-DD') + ' s/d ' + end.format('YYYY-MM-DD'))
+            $(E_F_DATE_RANGE).val(start.format('YYYY-MM-DD') + ' s/d ' + end.format('YYYY-MM-DD'))
         })
     }
 
@@ -74,18 +80,24 @@
             "ajax": {
                 "url": `${baseURL}/list`,
                 "type": "POST",
-                "data": function (data) {
-
+                "typeData": "JSON",
+                "data": function (d) {
+                    d.filter1 = $(E_F_1).val()
+                    d.filter2 = $(E_F_2).val()
+                    d.filter3 = $(E_F_3).val()
+                    d.date_single = $(E_F_DATE_SINGLE).val()
+                    d.date_range = $(E_F_DATE_RANGE).val()
                 },
                 "error": function (jqXHR, textStatus, errorThrown) {
-                    $.alert(`Terjadi kesalahan saat mengambil data. Err: ${errorThrown}`)
-                    return false
+                    toastr.error(`Terjadi kesalahan saat mengambil data. Err: ${errorThrown}`, textStatus)
                 }
             },
-            "columns": [{
+            "columns": [
+                {
                     "targets": -1,
                     "data": null,
-                    "defaultContent": btnAct
+                    "defaultContent": btnAct,
+                    "className": "text-center"
                 },
                 {
                     "data": "name"
@@ -100,7 +112,8 @@
                     "class": "details-control",
                     "orderable": false,
                     "data": null,
-                    "defaultContent": ""
+                    "defaultContent": "",
+                    "className": "text-center"
                 },
             ],
         })
@@ -130,7 +143,7 @@
                     cancel: {
                         keys: ['esc'],
                         action: function () {
-                            // $.alert('Canceled!')
+                            // DO NOTHING
                         }
                     },
                 }
@@ -138,39 +151,39 @@
         })
 
         $(`${E_TABLE} tbody`).on('click', 'tr td.details-control', function () {
-            let tr = $(this).closest('tr');
-            let row = dt.row(tr);
-            let idx = $.inArray(tr.attr('id'), dtDetail);
+            let tr = $(this).closest('tr')
+            let row = dt.row(tr)
+            let idx = $.inArray(tr.attr('id'), dtDetail)
 
             if (row.child.isShown()) {
-                tr.removeClass('details');
-                row.child.hide();
+                tr.removeClass('details')
+                row.child.hide()
 
                 // Remove from the 'open' array
-                dtDetail.splice(idx, 1);
+                dtDetail.splice(idx, 1)
             } else {
-                tr.addClass('details');
-                row.child(formatDetail(row.data())).show();
+                tr.addClass('details')
+                row.child(formatDetail(row.data())).show()
 
                 // Add to the 'open' array
                 if (idx === -1) {
-                    dtDetail.push(tr.attr('id'));
+                    dtDetail.push(tr.attr('id'))
                 }
             }
         })
 
         dt.on('draw', function () {
             $.each(dtDetail, function (i, id) {
-                $('#' + id + ' td.details-control').trigger('click');
-            });
-        });
+                $('#' + id + ' td.details-control').trigger('click')
+            })
+        })
     }
     
     let formatDetail = (d) => {
         let html = `Alamat: ${d.address}<br>
             <img src="${d.avatar}" class="img-thumbnail" alt="${d.name}">`
 
-        return html;
+        return html
     }
 
     const initClickHandler = () => {
