@@ -16,12 +16,6 @@
     <?= link_tag(RES_PLUGIN . '/toastr/toastr.min.css') ?>
 
     <?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
-
-    <style>
-        td .btn.text-xs {
-            font-size: smaller !important;
-        }
-    </style>
 </head>
 
 <body class="text-sm content-iframe">
@@ -44,13 +38,13 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="btn-group w-100 mb-3" role="group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Cari"><i class="fa fa-search"></i></button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Tambah"><i class="fa fa-plus-square"></i></button>
+                        <button id="btn-search" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Cari"><i class="fa fa-search"></i></button>
+                        <button id="btn-add" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Tambah"><i class="fa fa-plus-square"></i></button>
                         <div class="btn-group w-25" role="group">
                             <button type="button" class="btn btn-sm btn-outline-secondary btn-block dropdown-toggle btn-action" data-toggle="dropdown" title="Download"><i class="fa fa-download"></i> </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item download-pdf" href="#">PDF</a>
-                                <a class="dropdown-item download-spreadsheet" href="#">Spreadsheet</a>
+                                <a id="btn-download-pdf" class="dropdown-item download-pdf" href="#">PDF</a>
+                                <a id="btn-download-spreadsheet" class="dropdown-item download-spreadsheet" href="#">Spreadsheet</a>
                             </div>
                         </div>
                     </div>
@@ -106,32 +100,17 @@
                 <div class="col-md-9">
                     <div class="card card-secondary card-outline">
                         <div class="card-body">
-                            <table id="table-xyz" class="table table-sm table-striped table-responsive-lg nowrap" style="width: 100%;">
+                            <table id="table-xyz" class="table table-sm table-striped table-responsive nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>Aksi</th>
-                                        <th>UID</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>No. Telp</th>
+                                        <th>Detail</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <?php for ($i = 1; $i < 23; $i++) : $uid = rand(); ?>
-                                        <tr id="<?= $uid ?>">
-                                            <td>
-                                                <button type="button" class="btn btn-xs btn-warning text-xs edit" data-id="<?= $uid ?>">Ubah</button>
-                                                <button type="button" class="btn btn-xs btn-danger text-xs delete" data-id="<?= $uid ?>">Hapus</button>
-                                            </td>
-                                            <td><?= $uid ?></td>
-                                            <td>Internet Explorer 4.0</td>
-                                            <td>Win 95+</td>
-                                            <td><?= rand(1, 10) ?></td>
-                                            <td>X</td>
-                                        </tr>
-                                    <?php endfor; ?>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>

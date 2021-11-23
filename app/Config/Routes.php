@@ -48,7 +48,7 @@ $routes->group('/back-end', function ($routes) {
     //Menu XYZ
     $routes->group('menu-xyz', function ($routes) {
         $routes->get('/', 'Backend/MenuXYZ::index');
-        $routes->get('list', 'Backend/MenuXYZ::list');
+        $routes->post('list', 'Backend/MenuXYZ::list');
         $routes->get('form', 'Backend/MenuXYZ::form');
         $routes->post('new', 'Backend/MenuXYZ::save');
         $routes->put('update/(:num)', 'Backend\MenuXYZ::update/$1');
