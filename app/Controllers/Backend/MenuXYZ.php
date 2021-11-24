@@ -31,7 +31,8 @@ class MenuXYZ extends Base
             'uuid' => 'uuid',
             'name'  => 'name',
             'email'  => 'email',
-            'phone'  => 'phoneNumber',
+            'phone'  => 'e164PhoneNumber',
+            'born_date' => 'date',
             'address' => 'address',
             'avatar' => 'imageUrl',
         ];
@@ -50,7 +51,26 @@ class MenuXYZ extends Base
 
     public function form($act)
     {
+        $data['act'] = $act;
+        $data['class'] = $this->class;
 
+        if ($act == "e") {
+            $formatters = [
+                'uuid' => 'uuid',
+                'name'  => 'name',
+                'email'  => 'email',
+                'phone_number'  => 'e164PhoneNumber',
+                'born_date'  => 'date',
+                'address' => 'address',
+                'avatar' => 'imageUrl',
+            ];
+    
+            $fabricator = new \CodeIgniter\Test\Fabricator(App\Models\Test::class, $formatters, "id_ID");
+
+            $data += $fabricator->make(1)[0];
+        }
+
+        return view("{$this->class}/{$this->class}FormView", $data);
     }
 
     public function save()

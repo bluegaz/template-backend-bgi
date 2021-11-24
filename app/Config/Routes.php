@@ -49,7 +49,7 @@ $routes->group('/back-end', function ($routes) {
     $routes->group('menu-xyz', function ($routes) {
         $routes->get('/', 'Backend/MenuXYZ::index');
         $routes->post('list', 'Backend/MenuXYZ::list');
-        $routes->get('form', 'Backend/MenuXYZ::form');
+        $routes->get('form/(n|e)', 'Backend\MenuXYZ::form/$1');
         $routes->post('new', 'Backend/MenuXYZ::save');
         $routes->put('update/(:num)', 'Backend\MenuXYZ::update/$1');
         $routes->delete('delete/(:num)', 'Backend\MenuXYZ::delete/$1');
