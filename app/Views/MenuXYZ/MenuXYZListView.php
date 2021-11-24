@@ -72,7 +72,7 @@
                         <div class="card-body">
                             <?= form_open('', "id='filter-xyz'") ?>
                             <div class="form-group">
-                                <label for="filter1" mb-0>Filter 1</label>
+                                <label for="filter1">Filter 1</label>
                                 <input id="filter1" class="form-control form-control-sm" type="text" autocomplete="off" placeholder="Filter 1">
                             </div>
                             <div class="form-group">
@@ -115,6 +115,7 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>No. Telp</th>
+                                        <th>Tanggal Lahir</th>
                                         <th>Detail</th>
                                     </tr>
                                 </thead>

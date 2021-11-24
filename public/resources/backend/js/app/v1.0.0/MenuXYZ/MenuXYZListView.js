@@ -39,7 +39,6 @@
             autoUpdateInput: false,
             showDropdowns: true,
             minYear: 1990,
-            maxYear: parseInt(moment().format('YYYY'), 10),
             drops: 'up',
             autoApply: true,
             locale: {
@@ -107,6 +106,10 @@
                 },
                 {
                     "data": "phone"
+                },
+                {
+                    "data": "born_date",
+                    "className": "text-center"
                 },
                 {
                     "class": "details-control",
@@ -192,7 +195,7 @@
         })
 
         $(document).on("click", "#btn-add", function () {
-            $.alert("Asdfasdf " + $(this).data('id'))
+            window.open(`${baseURL}/form/n`)
         })
 
         $(document).on("click", "#btn-download-pdf", function () {
