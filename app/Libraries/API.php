@@ -4,68 +4,90 @@ namespace App\Libraries;
 
 class API
 {
-    public function call()
+    private $response = [];
+
+    public function call(string $req, string $method = "POST", array $body = null): bool
     {
-        $url = config("app")->baseAPIURL;
+        $url = config("app")->baseAPIURL . $req;
 
-        $this->setLogMessage("Start processing $action");
-
-        $payload = array(
-            "entity" => $this->entity,
-            "branch" => $this->branch,
-            "subbranch" => $this->subbranch,
-        );
-
-        $ch = curl_init($url);
+        $requestTime = date("Y-m-d\TH:i:sP");
 
         $headerOptions = array(
             "Content-Type:application/json",
-            "key:" . md5("saris_internal_" . date("Y-m-d")),
+            "key:" . config('app')->apiKey,
+            "x-token:" . hash('sha256', "bgi_document_monitoring-$requestTime-541nt531y4"),
         );
 
-        if (!empty($data)) {
+        $payload['request_time'] = $requestTime;
+
+        if (!empty($body)) {
             $payload["data"] = $data;
         }
 
         $payload = json_encode($payload);
 
         if (!$payload) {
-            $this->setLogMessage("Fail to convert data to JSON", TRUE);
-            return false;
+            $this->setResponse(0, "Payload cannot be null");
+            return false;            
         }
 
-        $dataLength = strlen($payload);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        $headerOptions[] = "Content-Length:$dataLength";
+        $payloadLength = strlen($payload);
+        $headerOptions[] = "Content-Length:$payloadLength";
+
+        $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headerOptions);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        if (!$debug) {
+        if (ENVIRONMENT !== 'development') {
             curl_setopt($ch, CURLOPT_FAILONERROR, 1);
         }
 
         $exec = curl_exec($ch);
 
         $errNo = curl_errno($ch);
-        $curlErrMsg = curl_error($ch);
+        $errMsg = curl_error($ch);
 
         curl_close($ch);
 
         if ($exec === FALSE) {
-            $this->setLogMessage("cURL err: ($errNo) $curlErrMsg", TRUE);
+            $this->setResponse($errNo, $errMsg);
             return false;
         }
-
-        $this->setLogMessage("$action successfuly executed");
 
         $output = json_decode($exec, true);
 
         if (!$output) {
-            $this->setLogMessage("Invalid JSON format. Output: $exec", TRUE);
+            $this->setResponse(0, "Invalid JSON format. Output: $exec");
             return false;
         }
 
         return $output;
+    }
+    
+    private function setResponse(int $code, string $message, array $data = null)
+    {
+        $response = [
+            'success' => $code === 200 ? true : false,
+            'code' => $code,
+            'message' => $message,
+        ];
+        
+        if ($data != null) {
+            $response['data'] = $data;
+        }
+        
+        $this->response = $response;
+    }
+
+    public function getResponse($json = false)
+    {
+        if ($json) {
+            return json_encode($this->response);
+        }
+
+        return $this->response;
     }
 }

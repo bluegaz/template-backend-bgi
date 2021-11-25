@@ -2,13 +2,13 @@
 
 namespace App\Controllers\Backend;
 
-use App\Libraries\API;
-
 class MenuXYZ extends Base
 {
     public function index()
     {
-        // $API = new API();
+        $execAPI = $this->api->call("users", "POST");
+
+        dd($this->api->getResponse());
 
         $data['class'] = $this->class;
         return view("{$this->class}/{$this->class}ListView", $data);
@@ -16,6 +16,7 @@ class MenuXYZ extends Base
 
     public function list()
     {
+
         $payload = [
             "cond" => [
                 "filter1" => $this->request->getPost("filter1"),

@@ -9,6 +9,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use \App\Libraries\API;
+
 /**
  * Class BaseController
  *
@@ -27,6 +29,13 @@ class Base extends Controller
      * @var CLIRequest|IncomingRequest
      */
     protected $request;
+
+    /**
+     * Buat call API
+     * 
+     * @var API
+     */
+    protected $api;
 
     /**
      * An array of helpers to be loaded automatically upon
@@ -64,6 +73,7 @@ class Base extends Controller
         parent::initController($request, $response, $logger);
 
         $this->session = \Config\Services::session();
+        $this->api = new API();
         
         $ctrl = explode('\\', service('router')->controllerName());
         $this->class = end($ctrl);
