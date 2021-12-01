@@ -9,6 +9,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use \App\Libraries\API;
+
 /**
  * Class BaseController
  *
@@ -29,6 +31,13 @@ class Base extends Controller
     protected $request;
 
     /**
+     * Buat call API
+     * 
+     * @var API
+     */
+    protected $api;
+
+    /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
      * to all other controllers that extend BaseController.
@@ -38,6 +47,7 @@ class Base extends Controller
     protected $helpers = [
         'html',
         'form',
+        'http_response'
     ];
 
     /**
@@ -64,6 +74,7 @@ class Base extends Controller
         parent::initController($request, $response, $logger);
 
         $this->session = \Config\Services::session();
+        $this->api = new API();
         
         $ctrl = explode('\\', service('router')->controllerName());
         $this->class = end($ctrl);
