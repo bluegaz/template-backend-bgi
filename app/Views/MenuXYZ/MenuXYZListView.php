@@ -16,117 +16,108 @@
     <?= link_tag(RES_PLUGIN . '/toastr/toastr.min.css') ?>
 
     <?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
-
-    <style>
-        /**
-            Vertical scrollbar-nya dibikin muncul terus
-            biar gak ganggu dimensi/size/apalah itu
-         */
-        body {
-            overflow-y: scroll;
-        }
-    </style>
 </head>
 
 <body class="text-sm content-iframe">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Menu XYZ</h1>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Menu XYZ</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="btn-group w-100 mb-3" role="group">
+                            <button id="btn-search" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Cari"><i class="fa fa-search"></i></button>
+                            <button id="btn-add" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Tambah"><i class="fa fa-plus-square"></i></button>
+                            <div class="btn-group w-25" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-block dropdown-toggle btn-action" data-toggle="dropdown" title="Download"><i class="fa fa-download"></i> </button>
+                                <div class="dropdown-menu">
+                                    <a id="btn-download-pdf" class="dropdown-item download-pdf" href="#">PDF</a>
+                                    <a id="btn-download-spreadsheet" class="dropdown-item download-spreadsheet" href="#">Spreadsheet</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-secondary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Filter</h3>
+                                <div class="card-tools">
+                                    <button id="btn-reset" type="button" class="btn btn-tool">
+                                        Reset
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <?= form_open('', "id='filter-user'") ?>
+                                <div class="form-group">
+                                    <label for="nik">NIK</label>
+                                    <input id="nik" class="form-control form-control-sm" type="text" autocomplete="off" placeholder="NIK">
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select id="status" class="form-control form-control-sm">
+                                        <option selected value="">Semua</option>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Non Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="filter2">Filter 2</label>
+                                    <select id="filter2" class="form-control form-control-sm">
+                                        <option selected disabled>Pilih...</option>
+                                        <option value="opsi1">option 1</option>
+                                        <option value="opsi2">option 2</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-single">Tanggal Single</label>
+                                    <input id="date-single" class="form-control form-control-sm" type="text" placeholder="Tanggal Single" readonly>
+                                    <small class="form-text text-muted mt-0">yyyy-mm-dd</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date-range">Tanggal Range</label>
+                                    <input id="date-range" class="form-control form-control-sm" type="text" placeholder="Tanggal Range" readonly>
+                                    <small class="form-text text-muted mt-0">yyyy-mm-dd s/d yyyy-mm-dd</small>
+                                </div>
+                                <?= form_close() ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card card-secondary card-outline">
+                            <div class="card-body">
+                                <table id="table-user" class="table table-sm table-striped table-responsive nowrap" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Aksi</th>
+                                            <th>NIK</th>
+                                            <th>Nama</th>
+                                            <th>Inisial</th>
+                                            <th>Detail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="btn-group w-100 mb-3" role="group">
-                        <button id="btn-search" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Cari"><i class="fa fa-search"></i></button>
-                        <button id="btn-add" type="button" class="btn btn-sm btn-outline-secondary btn-action" data-toggle="tooltip" title="Tambah"><i class="fa fa-plus-square"></i></button>
-                        <div class="btn-group w-25" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary btn-block dropdown-toggle btn-action" data-toggle="dropdown" title="Download"><i class="fa fa-download"></i> </button>
-                            <div class="dropdown-menu">
-                                <a id="btn-download-pdf" class="dropdown-item download-pdf" href="#">PDF</a>
-                                <a id="btn-download-spreadsheet" class="dropdown-item download-spreadsheet" href="#">Spreadsheet</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card-secondary card-outline">
-                        <div class="card-header">
-                            <h3 class="card-title">Filter</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" onclick="document.getElementById('filter-xyz').reset()">
-                                    Reset
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <?= form_open('', "id='filter-xyz'") ?>
-                            <div class="form-group">
-                                <label for="filter1">Filter 1</label>
-                                <input id="filter1" class="form-control form-control-sm" type="text" autocomplete="off" placeholder="Filter 1">
-                            </div>
-                            <div class="form-group">
-                                <label for="filter2">Filter 2</label>
-                                <select id="filter2" class="form-control form-control-sm">
-                                    <option selected disabled>Pilih...</option>
-                                    <option value="opsi1">option 1</option>
-                                    <option value="opsi2">option 2</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="filter3">Filter 3</label>
-                                <select id="filter3" class="form-control form-control-sm">
-                                    <option selected value="">Semua</option>
-                                    <option value="opsi1">option 1</option>
-                                    <option value="opsi2">option 2</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="date-single">Tanggal Single</label>
-                                <input id="date-single" class="form-control form-control-sm" type="text" placeholder="Tanggal Single" readonly>
-                                <small class="form-text text-muted mt-0">yyyy-mm-dd</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="date-range">Tanggal Range</label>
-                                <input id="date-range" class="form-control form-control-sm" type="text" placeholder="Tanggal Range" readonly>
-                                <small class="form-text text-muted mt-0">yyyy-mm-dd s/d yyyy-mm-dd</small>
-                            </div>
-                            <?= form_close() ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="card card-secondary card-outline">
-                        <div class="card-body">
-                            <table id="table-xyz" class="table table-sm table-striped table-responsive nowrap" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th>Aksi</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>No. Telp</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Detail</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <?= script_tag(RES_PLUGIN . '/jquery/jquery.min.js') ?>
     <?= script_tag(RES_PLUGIN . '/bootstrap/js/bootstrap.bundle.min.js') ?>
@@ -142,6 +133,8 @@
 
     <?= script_tag(RES_BACKEND . '/js/adminlte.min.js') ?>
 
+    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-global.js") ?>
+    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-list.js") ?>
     <?= script_tag(BACKEND_JS_APP . "/v1.0.0/{$class}/{$class}ListView.js") ?>
 </body>
 
