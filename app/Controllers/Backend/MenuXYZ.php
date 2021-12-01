@@ -6,69 +6,71 @@ class MenuXYZ extends Base
 {
     public function index()
     {
-        $execAPI = $this->api->call("users", "POST");
-
-        dd($this->api->getResponse());
-
         $data['class'] = $this->class;
         return view("{$this->class}/{$this->class}ListView", $data);
     }
 
     public function list()
     {
-
         $payload = [
-            "cond" => [
-                "filter1" => $this->request->getPost("filter1"),
-                "filter2" => $this->request->getPost("filter2"),
-                "filter3" => $this->request->getPost("filter3"),
-                "date_single" => $this->request->getPost("date_range"),
-                "date_range" => $this->request->getPost("date_single"),
+            "where" => [
+                "nik" => $this->request->getPost("nik"),
+                "is_active" => $this->request->getPost("status"),
             ],
-            "limit" => "{$this->request->getPost('start')}, {$this->request->getPost('length')}"
+            "limit" => [
+                "start" => (int) $this->request->getPost('start'),
+                "length" => (int) $this->request->getPost('length'),
+            ],
         ];
+        
+        $execAPI = $this->api->call("users", "POST", $payload);
 
-        $formatters = [
-            'uuid' => 'uuid',
-            'name'  => 'name',
-            'email'  => 'email',
-            'phone'  => 'e164PhoneNumber',
-            'born_date' => 'date',
-            'address' => 'address',
-            'avatar' => 'imageUrl',
-        ];
+        $res = $this->api->getResponse();
 
-        $fabricator = new \CodeIgniter\Test\Fabricator(App\Models\Test::class, $formatters, "id_ID");
+        $recordTotal = 0;
+        $recoredFiltered = 0;
+        $data = [];
+
+        if (isset($res['results'])) {
+            $res = $res['results'];
+
+            $recordTotal = $res['record']['total'];
+            $recoredFiltered = $res['record']['filtered'];
+            $data = $res['data'];
+        }
 
         $fake = [
             "draw" => $this->request->getPost("draw"),
-            "recordsTotal" => 23,
-            "recordsFiltered" => 23,
-            "data" => $fabricator->make(10),
+            "recordsTotal" => $recordTotal,
+            "recordsFiltered" => $recoredFiltered,
+            "data" => $data,
         ];
 
         echo json_encode($fake);
     }
 
-    public function form($act)
+    public function form($act, $id = null)
     {
         $data['act'] = $act;
         $data['class'] = $this->class;
 
         if ($act == "e") {
-            $formatters = [
-                'uuid' => 'uuid',
-                'name'  => 'name',
-                'email'  => 'email',
-                'phone_number'  => 'e164PhoneNumber',
-                'born_date'  => 'date',
-                'address' => 'address',
-                'avatar' => 'imageUrl',
-            ];
-    
-            $fabricator = new \CodeIgniter\Test\Fabricator(App\Models\Test::class, $formatters, "id_ID");
+            
+            if ($id === null || !is_numeric($id)) {
+                response(400, "ID tidak boleh kosong");
+            }
 
-            $data += $fabricator->make(1)[0];
+            $payload['where'] = ["id" => $id];
+
+            $execAPI = $this->api->call("users", "POST", $payload);
+
+            $res = $this->api->getResponse();
+            
+            if (!isset($res['results'])) {
+                response($res['code'], $res['message']);
+            }
+
+            $data += $res['results']['data'][0];
         }
 
         return view("{$this->class}/{$this->class}FormView", $data);
@@ -76,16 +78,36 @@ class MenuXYZ extends Base
 
     public function save()
     {
+        $post = $this->request->getPost();
 
+        $post['password'] = password_hash($post['password'], PASSWORD_BCRYPT);
+
+        $payload[] = $post;
+
+        $execAPI = $this->api->call("users", "PUT", $payload);
+
+        $this->api->responseValidation();
+
+        response(200, null);
     }
 
     public function update($id)
     {
+        $payload = $this->request->getPost();
 
+        $execAPI = $this->api->call("users/$id", "PUT", $payload);
+
+        $this->api->responseValidation();
+
+        response(200, null);
     }
 
     public function delete($id)
     {
+        $execAPI = $this->api->call("users/$id", "DELETE");
 
+        $this->api->responseValidation();
+
+        response(200, null);
     }
 }

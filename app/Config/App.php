@@ -34,7 +34,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseAPIURL = 'https://api.dokumen.bgiapp.web.id/';
+    public $baseAPIURL = 'https://api.dokumen.bgiapp.web.id/v1/';
     public $apiKey = '8f82f952ea8857fccf3c80df09db46e4';
 
     /**

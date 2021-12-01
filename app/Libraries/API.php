@@ -5,6 +5,7 @@ namespace App\Libraries;
 class API
 {
     private $response = [];
+    private $responseStatus;
 
     public function call(string $req, string $method = "POST", array $body = null): bool
     {
@@ -12,23 +13,27 @@ class API
 
         $requestTime = date("Y-m-d\TH:i:sP");
 
-        $headerOptions = array(
+        $headerOptions = [
             "Content-Type:application/json",
             "key:" . config('app')->apiKey,
             "x-token:" . hash('sha256', "bgi_document_monitoring-$requestTime-541nt531y4"),
-        );
+        ];
 
         $payload['request_time'] = $requestTime;
 
         if (!empty($body)) {
-            $payload["data"] = $data;
-        }
+            if ($method == "POST") {
+                $body['where'] = clear_payload($body['where']);
+            }
 
+            $payload["payload"] = $body;
+        }
+        
         $payload = json_encode($payload);
 
         if (!$payload) {
-            $this->setResponse(0, "Payload cannot be null");
-            return false;            
+            $this->setResponse(500, "Payload cannot be null");
+            return false;
         }
 
         $payloadLength = strlen($payload);
@@ -47,47 +52,58 @@ class API
 
         $exec = curl_exec($ch);
 
-        $errNo = curl_errno($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errMsg = curl_error($ch);
 
         curl_close($ch);
 
         if ($exec === FALSE) {
-            $this->setResponse($errNo, $errMsg);
+            $this->setResponse($statusCode, $errMsg);
             return false;
         }
 
-        $output = json_decode($exec, true);
+        $response = json_decode($exec, true);
 
-        if (!$output) {
-            $this->setResponse(0, "Invalid JSON format. Output: $exec");
+        if (!$response) {
+            $this->setResponse(500, "Invalid JSON format. Response: $exec");
             return false;
         }
 
-        return $output;
+        $this->setResponse($response['code'], $response['msg'], @$response['results']);
+
+        return true;
     }
-    
-    private function setResponse(int $code, string $message, array $data = null)
+
+    private function setResponse(int $code, $message, array $data = null)
     {
+        $this->responseStatus = $code === 200 ? true : false;
+
         $response = [
-            'success' => $code === 200 ? true : false,
+            'success' => $this->responseStatus,
             'code' => $code,
             'message' => $message,
         ];
-        
+
         if ($data != null) {
-            $response['data'] = $data;
+            $response['results'] = $data;
         }
-        
+
         $this->response = $response;
     }
 
-    public function getResponse($json = false)
+    public function getResponse(bool $needValidation = true): array
     {
-        if ($json) {
-            return json_encode($this->response);
+        if ($needValidation) {
+            $this->responseValidation();
         }
 
         return $this->response;
+    }
+
+    public function responseValidation()
+    {
+        if ($this->responseStatus === false) {
+            response($this->response['code'], $this->response['message']);
+        }
     }
 }

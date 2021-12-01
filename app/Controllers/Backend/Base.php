@@ -47,6 +47,7 @@ class Base extends Controller
     protected $helpers = [
         'html',
         'form',
+        'http_response'
     ];
 
     /**
