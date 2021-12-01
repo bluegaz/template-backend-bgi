@@ -78,6 +78,14 @@ body {
     background-color: #fff
 }
 
+/**
+    Vertical scrollbar-nya dibikin muncul terus
+    biar gak ganggu dimensi/size/apalah itu
+*/
+body.content-iframe {
+    overflow-y: scroll;
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
     outline: 0 !important
 }

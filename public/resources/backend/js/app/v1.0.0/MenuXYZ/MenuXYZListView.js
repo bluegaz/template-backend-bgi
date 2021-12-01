@@ -3,11 +3,11 @@
 }((function (g, a) {
     "use strict"
 
-    const baseURL = "/back-end/menu-xyz"
-    const E_FORM_FILTER = "#filter-xyz"
-    const E_TABLE = "#table-xyz"
-    const E_F_1 = "#filter1"
-    const E_F_2 = "#filter2"
+    const BASE_URL = "/back-end/menu-xyz"
+    const E_FORM_FILTER = "#filter-user"
+    const E_TABLE = "#table-user"
+    const E_F_NIK = "#nik"
+    const E_F_STATUS = "#status"
     const E_F_3 = "#filter3"
     const E_F_DATE_SINGLE = "#date-single"
     const E_F_DATE_RANGE = "#date-range"
@@ -70,45 +70,36 @@
             <button type="button" class="btn btn-xs btn-danger text-xs delete">Hapus</button>`
 
         dt = $(E_TABLE).DataTable({
-            "rowId": "uuid",
-            "ordering": false,
-            "searching": false,
-            "processing": true,
-            "serverSide": true,
-            "deferLoading": false,
+            "rowId": "id",
             "ajax": {
-                "url": `${baseURL}/list`,
+                "url": `${BASE_URL}/list`,
                 "type": "POST",
                 "typeData": "JSON",
                 "data": function (d) {
-                    d.filter1 = $(E_F_1).val()
-                    d.filter2 = $(E_F_2).val()
-                    d.filter3 = $(E_F_3).val()
-                    d.date_single = $(E_F_DATE_SINGLE).val()
-                    d.date_range = $(E_F_DATE_RANGE).val()
+                    d.nik = $(E_F_NIK).val()
+                    d.status = $(E_F_STATUS).val()
                 },
                 "error": function (jqXHR, textStatus, errorThrown) {
-                    toastr.error(`Terjadi kesalahan saat mengambil data. Err: ${errorThrown}`, textStatus)
+                    showNotification("error", errorThrown)
+                },
+                "complete": function(){
+                    $(`${E_TABLE}_processing`).hide();
                 }
             },
-            "columns": [
-                {
+            "columns": [{
                     "targets": -1,
                     "data": null,
                     "defaultContent": btnAct,
                     "className": "text-center"
                 },
                 {
+                    "data": "nik"
+                },
+                {
                     "data": "name"
                 },
                 {
-                    "data": "email"
-                },
-                {
-                    "data": "phone"
-                },
-                {
-                    "data": "born_date",
+                    "data": "initial",
                     "className": "text-center"
                 },
                 {
@@ -122,25 +113,29 @@
         })
 
         $(`${E_TABLE} tbody`).on('click', 'button.edit', function () {
-            let id = dt.row($(this).parents('tr')).data()['uuid']
-            $.alert(`OTW edit ${id}`)
+            let id = dt.row($(this).parents('tr')).data()['id']
+            window.open(`${BASE_URL}/form/e/${id}`)
         })
 
         $(`${E_TABLE} tbody`).on("click", `button.delete`, function () {
             let rowData = dt.row($(this).parents('tr')).data()
-            let id = rowData['uuid']
+            let id = rowData['id']
             let content = rowData['name']
 
             $.confirm({
                 title: 'Konfirmasi',
+                type: 'red',
                 content: `Apakah anda yakin ingin menghapus ${content}?`,
                 buttons: {
                     confirm: {
                         btnClass: 'btn-red',
                         keys: ['enter'],
                         action: function () {
-                            dt.row(`#${id}`).remove().draw()
-                            toastr.success(`${content} berhasil dihapus`, "Berhasil")
+                            deleteRow(`${BASE_URL}/delete`, id)
+                                .done(function(){
+                                    dt.row(`#${id}`).remove().draw()
+                                    showNotification("success", `${content} berhasil dihapus`)
+                                })
                         }
                     },
                     cancel: {
@@ -181,21 +176,25 @@
             })
         })
     }
-    
+
     let formatDetail = (d) => {
-        let html = `Alamat: ${d.address}<br>
-            <img src="${d.avatar}" class="img-thumbnail" alt="${d.name}">`
+        let html = `Login terakhir: ${d.last_login}<br>
+            Login IP: ${d.last_login_ip}`
 
         return html
     }
 
     const initClickHandler = () => {
+        $(document).on("click", "#btn-reset", function () {
+            $(E_FORM_FILTER).trigger('reset')
+        })
+
         $(document).on("click", "#btn-search", function () {
             dt.ajax.reload()
         })
 
         $(document).on("click", "#btn-add", function () {
-            window.open(`${baseURL}/form/n`)
+            window.open(`${BASE_URL}/form/n`)
         })
 
         $(document).on("click", "#btn-download-pdf", function () {
