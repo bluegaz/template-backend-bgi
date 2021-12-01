@@ -50,8 +50,9 @@ $routes->group('/back-end', function ($routes) {
         $routes->get('/', 'Backend/MenuXYZ::index');
         $routes->post('list', 'Backend/MenuXYZ::list');
         $routes->get('form/(n|e)', 'Backend\MenuXYZ::form/$1');
+        $routes->get('form/(e)/(:num)', 'Backend\MenuXYZ::form/$1/$2');
         $routes->post('new', 'Backend/MenuXYZ::save');
-        $routes->put('update/(:num)', 'Backend\MenuXYZ::update/$1');
+        $routes->post('update/(:num)', 'Backend\MenuXYZ::update/$1');
         $routes->delete('delete/(:num)', 'Backend\MenuXYZ::delete/$1');
     });
 });
