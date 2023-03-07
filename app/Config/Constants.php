@@ -23,10 +23,9 @@ defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
  | Simpen custom variable constant di blok sini
  |
  */
-defined('RES_BACKEND') || define('RES_BACKEND', 'resources/backend');
-defined('RES_PLUGIN') || define('RES_PLUGIN', 'resources/plugins');
-defined('RES_PLUGIN') || define('RES_PLUGIN', 'resources/plugins');
-defined('BACKEND_JS_APP') || define('BACKEND_JS_APP', 'resources/backend/js/app');
+defined('RESOURCES') || define('RESOURCES', 'resources');
+defined('RESOURCE_PLUGINS') || define('RESOURCE_PLUGINS', 'resources/plugins');
+defined('APP_JS') || define('APP_JS', 'resources/js/app');
 
 /*
  | --------------------------------------------------------------------------

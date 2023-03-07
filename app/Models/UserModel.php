@@ -4,30 +4,30 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Test extends Model
+class UserModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'test';
-    protected $primaryKey       = 'id';
+    protected $table            = 'users';
+    protected $primaryKey       = 'username';
     protected $useAutoIncrement = true;
-    
+    protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = false;
+    protected $protectFields    = true;
     protected $allowedFields    = [];
 
     // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'timestamp';
     protected $createdField  = 'created_at';
-    protected $updatedField  = '';
-    protected $deletedField  = '';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
-    protected $cleanValidationRules = false;
+    protected $cleanValidationRules = true;
 
     // Callbacks
     protected $allowCallbacks = true;
@@ -39,4 +39,9 @@ class Test extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getUser(string $username)
+    {
+        return $this->find($username);
+    }
 }

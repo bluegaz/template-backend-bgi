@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Controllers\LoginController;
+
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
@@ -29,7 +31,12 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', [LoginController::class, 'index']);
+
+$routes->group('login', function ($routes) {
+    $routes->post('auth', [LoginController::class, 'auth']);
+    $routes->post('second-auth', [LoginController::class, 'secondAuth']);
+});
 
 /*
  * --------------------------------------------------------------------
