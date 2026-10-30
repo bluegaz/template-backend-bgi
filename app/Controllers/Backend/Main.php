@@ -2,12 +2,10 @@
 
 namespace App\Controllers\Backend;
 
-use CodeIgniter\Controller;
-
 class Main extends Base
 {
-    public function index()
+    public function index(): string
     {
-        return view("{$this->class}View", ["class" => $this->class]);
+        return view("{$this->class}View", ['class' => $this->class]);
     }
 }

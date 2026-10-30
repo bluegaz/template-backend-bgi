@@ -11,6 +11,22 @@ class Email extends BaseConfig
     public string $recipients = '';
 
     /**
+     * OTP e-mail sender.
+     */
+    public string $fromEmailOTP = '';
+    public string $fromNameOTP  = '';
+
+    /**
+     * IT helpdesk address used as the reply-to for OTP e-mails.
+     */
+    public string $itHelpdesk = '';
+
+    /**
+     * Additional jargon rendered in the OTP e-mail.
+     */
+    public string $jargon1 = '';
+
+    /**
      * The "user agent"
      */
     public string $userAgent = 'CodeIgniter';
@@ -26,9 +42,14 @@ class Email extends BaseConfig
     public string $mailPath = '/usr/sbin/sendmail';
 
     /**
-     * SMTP Server Address
+     * SMTP Server Hostname
      */
     public string $SMTPHost = '';
+
+    /**
+     * Which SMTP authentication method to use: login, plain
+     */
+    public string $SMTPAuthMethod = 'login';
 
     /**
      * SMTP Username
@@ -56,7 +77,11 @@ class Email extends BaseConfig
     public bool $SMTPKeepAlive = false;
 
     /**
-     * SMTP Encryption. Either tls or ssl
+     * SMTP Encryption.
+     *
+     * @var string '', 'tls' or 'ssl'. 'tls' will issue a STARTTLS command
+     *             to the server. 'ssl' means implicit SSL. Connection on port
+     *             465 should set this to ''.
      */
     public string $SMTPCrypto = 'tls';
 

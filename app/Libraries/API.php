@@ -2,42 +2,45 @@
 
 namespace App\Libraries;
 
+use Config\App;
+
 class API
 {
-    private $response = [];
-    private $responseStatus;
+    private array $response = [];
+    private ?bool $responseStatus = null;
 
-    public function call(string $req, string $method = "POST", array $body = null): bool
+    public function call(string $req, string $method = 'POST', ?array $body = null): bool
     {
-        $url = config("app")->baseAPIURL . $req;
+        $url = config(App::class)->baseAPIURL . $req;
 
-        $requestTime = date("Y-m-d\TH:i:sP");
+        $requestTime = date('Y-m-d\TH:i:sP');
 
         $headerOptions = [
-            "Content-Type:application/json",
-            "key:" . config('app')->apiKey,
-            "x-token:" . hash('sha256', "bgi_document_monitoring-$requestTime-541nt531y4"),
+            'Content-Type:application/json',
+            'key:' . config(App::class)->apiKey,
+            'x-token:' . hash('sha256', "bgi_document_monitoring-{$requestTime}-541nt531y4"),
         ];
 
         $payload['request_time'] = $requestTime;
 
-        if (!empty($body)) {
-            if ($method == "POST") {
+        if (! empty($body)) {
+            if ($method === 'POST') {
                 $body['where'] = clear_payload($body['where']);
             }
 
-            $payload["payload"] = $body;
+            $payload['payload'] = $body;
         }
-        
+
         $payload = json_encode($payload);
 
-        if (!$payload) {
-            $this->setResponse(500, "Payload cannot be null");
+        if (! $payload) {
+            $this->setResponse(500, 'Payload cannot be null');
+
             return false;
         }
 
         $payloadLength = strlen($payload);
-        $headerOptions[] = "Content-Length:$payloadLength";
+        $headerOptions[] = "Content-Length:{$payloadLength}";
 
         $ch = curl_init($url);
 
@@ -52,39 +55,39 @@ class API
 
         $exec = curl_exec($ch);
 
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $statusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errMsg = curl_error($ch);
 
-        curl_close($ch);
-
-        if ($exec === FALSE) {
+        if ($exec === false) {
             $this->setResponse($statusCode, $errMsg);
+
             return false;
         }
 
         $response = json_decode($exec, true);
 
-        if (!$response) {
-            $this->setResponse(500, "Invalid JSON format. Response: $exec");
+        if (! $response) {
+            $this->setResponse(500, "Invalid JSON format. Response: {$exec}");
+
             return false;
         }
 
-        $this->setResponse($response['code'], $response['msg'], @$response['results']);
+        $this->setResponse((int) $response['code'], $response['msg'], $response['results'] ?? null);
 
         return true;
     }
 
-    private function setResponse(int $code, $message, array $data = null)
+    private function setResponse(int $code, mixed $message, ?array $data = null): void
     {
-        $this->responseStatus = $code === 200 ? true : false;
+        $this->responseStatus = $code === 200;
 
         $response = [
             'success' => $this->responseStatus,
-            'code' => $code,
+            'code'    => $code,
             'message' => $message,
         ];
 
-        if ($data != null) {
+        if ($data !== null) {
             $response['results'] = $data;
         }
 
@@ -100,7 +103,7 @@ class API
         return $this->response;
     }
 
-    public function responseValidation()
+    public function responseValidation(): void
     {
         if ($this->responseStatus === false) {
             response($this->response['code'], $this->response['message']);

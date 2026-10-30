@@ -1,29 +1,21 @@
 <?php
 
-use CodeIgniter\HTTP\Response;
-
-if (!function_exists('response')) {
-
-    function response(int $code, $message, array $data = null)
+if (! function_exists('response')) {
+    /**
+     * Send a JSON response and stop the script.
+     */
+    function response(int $code, mixed $message, ?array $data = null): never
     {
         $output = [
-            'code' => $code,
-            'message' => $message
+            'code'    => $code,
+            'message' => $message,
         ];
 
-        if ($data != null) {
+        if ($data !== null) {
             $output['data'] = $data;
         }
 
         $response = service('response');
-
-        // if ($cache === true) {
-        //     $response->setCache([
-        //         'max-age'  => 21600,
-        //         's-maxage' => 86400,
-        //         'etag'     => 'test'
-        //     ]);
-        // }
 
         $response->setStatusCode($code)
             ->setJSON($output);
@@ -33,12 +25,13 @@ if (!function_exists('response')) {
     }
 }
 
-if (!function_exists('clear_payload')) {
-
-    function clear_payload(array $payload)
+if (! function_exists('clear_payload')) {
+    /**
+     * Remove empty values from the given payload.
+     */
+    function clear_payload(array $payload): array
     {
         foreach ($payload as $key => $value) {
-            
             if ($value === '' || $value === null) {
                 unset($payload[$key]);
             }

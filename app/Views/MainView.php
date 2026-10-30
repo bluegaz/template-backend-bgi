@@ -7,8 +7,8 @@
     <title>BGI App</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <?= link_tag(RES_PLUGIN . '/fontawesome-free/css/all.min.css') ?>
-    <?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/fontawesome-free/css/all.min.css') ?>
+    <?= link_tag(RESOURCES . '/css/adminlte.min.css') ?>
 </head>
 
 <body class="text-sm">
@@ -124,19 +124,19 @@
                 <div class="tab-loading">
                     <div>
 
-                        <?= img(RES_BACKEND . '/img/loading-page.svg') ?>
+                        <?= img(RESOURCES . '/img/loading-page.svg') ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <?= script_tag(RES_PLUGIN . '/jquery/jquery.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/bootstrap/js/bootstrap.bundle.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/jquery/jquery.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/bootstrap/js/bootstrap.bundle.min.js') ?>
 
-    <?= script_tag(RES_BACKEND . '/js/adminlte.min.js') ?>
+    <?= script_tag(RESOURCES . '/js/adminlte.min.js') ?>
 
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/{$class}View.js") ?>
+    <?= script_tag(APP_JS . "/{$class}View.js") ?>
 </body>
 
 </html>

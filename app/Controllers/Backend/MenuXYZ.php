@@ -4,26 +4,27 @@ namespace App\Controllers\Backend;
 
 class MenuXYZ extends Base
 {
-    public function index()
+    public function index(): string
     {
         $data['class'] = $this->class;
+
         return view("{$this->class}/{$this->class}ListView", $data);
     }
 
-    public function list()
+    public function list(): void
     {
         $payload = [
-            "where" => [
-                "nik" => $this->request->getPost("nik"),
-                "is_active" => $this->request->getPost("status"),
+            'where' => [
+                'nik'       => $this->request->getPost('nik'),
+                'is_active' => $this->request->getPost('status'),
             ],
-            "limit" => [
-                "start" => (int) $this->request->getPost('start'),
-                "length" => (int) $this->request->getPost('length'),
+            'limit' => [
+                'start'  => (int) $this->request->getPost('start'),
+                'length' => (int) $this->request->getPost('length'),
             ],
         ];
-        
-        $execAPI = $this->api->call("users", "POST", $payload);
+
+        $this->api->call('users', 'POST', $payload);
 
         $res = $this->api->getResponse();
 
@@ -40,33 +41,32 @@ class MenuXYZ extends Base
         }
 
         $fake = [
-            "draw" => $this->request->getPost("draw"),
-            "recordsTotal" => $recordTotal,
-            "recordsFiltered" => $recoredFiltered,
-            "data" => $data,
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $recordTotal,
+            'recordsFiltered' => $recoredFiltered,
+            'data'            => $data,
         ];
 
         echo json_encode($fake);
     }
 
-    public function form($act, $id = null)
+    public function form(string $act, ?string $id = null): string
     {
         $data['act'] = $act;
         $data['class'] = $this->class;
 
-        if ($act == "e") {
-            
-            if ($id === null || !is_numeric($id)) {
-                response(400, "ID tidak boleh kosong");
+        if ($act === 'e') {
+            if ($id === null || ! is_numeric($id)) {
+                response(400, 'ID tidak boleh kosong');
             }
 
-            $payload['where'] = ["id" => $id];
+            $payload = ['where' => ['id' => $id]];
 
-            $execAPI = $this->api->call("users", "POST", $payload);
+            $this->api->call('users', 'POST', $payload);
 
             $res = $this->api->getResponse();
-            
-            if (!isset($res['results'])) {
+
+            if (! isset($res['results'])) {
                 response($res['code'], $res['message']);
             }
 
@@ -76,7 +76,7 @@ class MenuXYZ extends Base
         return view("{$this->class}/{$this->class}FormView", $data);
     }
 
-    public function save()
+    public function save(): void
     {
         $post = $this->request->getPost();
 
@@ -84,27 +84,27 @@ class MenuXYZ extends Base
 
         $payload[] = $post;
 
-        $execAPI = $this->api->call("users", "PUT", $payload);
+        $this->api->call('users', 'PUT', $payload);
 
         $this->api->responseValidation();
 
         response(200, null);
     }
 
-    public function update($id)
+    public function update(string $id): void
     {
         $payload = $this->request->getPost();
 
-        $execAPI = $this->api->call("users/$id", "PUT", $payload);
+        $this->api->call("users/{$id}", 'PUT', $payload);
 
         $this->api->responseValidation();
 
         response(200, null);
     }
 
-    public function delete($id)
+    public function delete(string $id): void
     {
-        $execAPI = $this->api->call("users/$id", "DELETE");
+        $this->api->call("users/{$id}", 'DELETE');
 
         $this->api->responseValidation();
 

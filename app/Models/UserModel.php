@@ -10,7 +10,6 @@ class UserModel extends Model
     protected $table            = 'users';
     protected $primaryKey       = 'username';
     protected $useAutoIncrement = true;
-    protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
@@ -18,7 +17,7 @@ class UserModel extends Model
 
     // Dates
     protected $useTimestamps = true;
-    protected $dateFormat    = 'timestamp';
+    protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
@@ -40,7 +39,7 @@ class UserModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getUser(string $username)
+    public function getUser(string $username): array|object|null
     {
         return $this->find($username);
     }

@@ -4,7 +4,7 @@
 <title>Form BGI App</title>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-<?= link_tag(RES_PLUGIN . '/fontawesome-free/css/all.min.css') ?>
-<?= link_tag(RES_PLUGIN . '/jquery-confirm/jquery-confirm.min.css') ?>
-<?= link_tag(RES_PLUGIN . '/toastr/toastr.min.css') ?>
-<?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
+<?= link_tag(RESOURCE_PLUGINS . '/fontawesome-free/css/all.min.css') ?>
+<?= link_tag(RESOURCE_PLUGINS . '/jquery-confirm/jquery-confirm.min.css') ?>
+<?= link_tag(RESOURCE_PLUGINS . '/toastr/toastr.min.css') ?>
+<?= link_tag(RESOURCES . '/css/adminlte.min.css') ?>

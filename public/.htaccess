@@ -45,7 +45,7 @@ Options -Indexes
 </IfModule>
 
 # Disable server signature start
-	ServerSignature Off
+ServerSignature Off
 # Disable server signature end
 
 <IfModule mod_deflate.c>
@@ -75,3 +75,4 @@ Options -Indexes
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
 	BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 </IfModule>
+

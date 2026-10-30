@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <?= view("_include/form_head.php") ?>
+    <?= view('_include/form_head.php') ?>
 
-    <?= link_tag(RES_PLUGIN . '/daterangepicker/daterangepicker.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/daterangepicker/daterangepicker.css') ?>
 </head>
 
 <body class="text-sm content-iframe bg-light">
-    <?= view("_include/form_header.php") ?>
+    <?= view('_include/form_header.php') ?>
 
     <div class="container-lg">
         <!-- Main content -->
@@ -73,14 +73,14 @@
         </section>
     </div>
 
-    <?= view("_include/form_footer.php") ?>
+    <?= view('_include/form_footer.php') ?>
 
-    <?= script_tag(RES_PLUGIN . '/moment/moment-with-locales.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/daterangepicker/daterangepicker.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/moment/moment-with-locales.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/daterangepicker/daterangepicker.js') ?>
 
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-global.js") ?>
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-form.js") ?>
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/{$class}/{$class}FormView.js") ?>
+    <?= script_tag(APP_JS . '/config-global.js') ?>
+    <?= script_tag(APP_JS . '/config-form.js') ?>
+    <?= script_tag(APP_JS . "/{$class}/{$class}FormView.js") ?>
 </body>
 
 </html>

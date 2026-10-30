@@ -6,45 +6,45 @@ use CodeIgniter\Database\Migration;
 
 class CreateTest extends Migration
 {
-    public function up()
+    public function up(): void
     {
         // Membuat kolom/field untuk tabel news
         $this->forge->addField([
-            'id'          => [
+            'id' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
-                'auto_increment' => true
+                'auto_increment' => true,
             ],
-            'title'       => [
-                'type'           => 'VARCHAR',
-                'constraint'     => '255'
+            'title' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '255',
             ],
-            'author'      => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 100,
-                'default'        => 'John Doe',
+            'author' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
+                'default'    => 'John Doe',
             ],
             'content' => [
-                'type'           => 'TEXT',
-                'null'           => true,
+                'type' => 'TEXT',
+                'null' => true,
             ],
-            'status'      => [
-                'type'           => 'ENUM',
-                'constraint'     => ['published', 'draft'],
-                'default'        => 'draft',
+            'status' => [
+                'type'       => 'ENUM',
+                'constraint' => ['published', 'draft'],
+                'default'    => 'draft',
             ],
-            'created_at DATETIME DEFAULT CURRENT_TIMESTAMP'
+            'created_at DATETIME DEFAULT CURRENT_TIMESTAMP',
         ]);
 
         // Membuat primary key
-        $this->forge->addKey('id', TRUE);
+        $this->forge->addKey('id', true);
 
         // Membuat tabel news
-        $this->forge->createTable('test', TRUE);
+        $this->forge->createTable('test', true);
     }
 
-    public function down()
+    public function down(): void
     {
         //
     }

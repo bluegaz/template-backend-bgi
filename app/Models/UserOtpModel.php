@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class UserOtpModel extends Model
 {
-    protected $DBGroup          = 'default';
-    protected $table            = 'user_otp';
-    protected $protectFields    = false;
+    protected $DBGroup       = 'default';
+    protected $table         = 'user_otp';
+    protected $protectFields = false;
 }

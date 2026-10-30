@@ -2,81 +2,58 @@
 
 namespace App\Controllers\Backend;
 
-use CodeIgniter\Controller;
-use CodeIgniter\HTTP\CLIRequest;
-use CodeIgniter\HTTP\IncomingRequest;
+use App\Libraries\API;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-use \App\Libraries\API;
-
 /**
- * Class BaseController
+ * Class Base
  *
- * BaseController provides a convenient place for loading components
- * and performing functions that are needed by all your controllers.
- * Extend this class in any new controllers:
- *     class Home extends BaseController
+ * Base controller for the backend area. It provides a convenient place for
+ * loading components and performing functions that are needed by all backend
+ * controllers.
  *
- * For security be sure to declare any new methods as protected or private.
+ * For security, be sure to declare any new methods as protected or private.
  */
-class Base extends Controller
+class Base extends \App\Controllers\BaseController
 {
     /**
-     * Instance of the main Request object.
-     *
-     * @var CLIRequest|IncomingRequest
-     */
-    protected $request;
-
-    /**
      * Buat call API
-     * 
-     * @var API
      */
-    protected $api;
+    protected API $api;
 
     /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available
-     * to all other controllers that extend BaseController.
+     * to all other controllers that extend this controller.
      *
-     * @var array
+     * @var list<string>
      */
     protected $helpers = [
         'html',
         'form',
-        'http_response'
+        'http_response',
     ];
 
     /**
      * Buat nampung nama class/controller yang dipanggil.
      * Untuk menyeragamkan seluruh nama file, mulai dari
      * Controller, Model, View, JS, dll.
-     * 
-     * @var string
      */
-    protected $class;
-
-    /**
-     * 
-     * @var Services::session
-     */
-    protected $session;
+    protected string $class = '';
 
     /**
      * Constructor.
      */
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger): void
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
-        $this->session = \Config\Services::session();
         $this->api = new API();
-        
+
         $ctrl = explode('\\', service('router')->controllerName());
-        $this->class = end($ctrl);
+        $this->class = (string) end($ctrl);
     }
 }

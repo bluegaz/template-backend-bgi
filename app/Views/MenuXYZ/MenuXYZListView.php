@@ -8,14 +8,14 @@
     <title>List</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <?= link_tag(RES_PLUGIN . '/fontawesome-free/css/all.min.css') ?>
-    <?= link_tag(RES_PLUGIN . '/daterangepicker/daterangepicker.css') ?>
-    <?= link_tag(RES_PLUGIN . '/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>
-    <?= link_tag(RES_PLUGIN . '/datatables-responsive/css/responsive.bootstrap4.min.css') ?>
-    <?= link_tag(RES_PLUGIN . '/jquery-confirm/jquery-confirm.min.css') ?>
-    <?= link_tag(RES_PLUGIN . '/toastr/toastr.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/fontawesome-free/css/all.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/daterangepicker/daterangepicker.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/datatables-bs4/css/dataTables.bootstrap4.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/datatables-responsive/css/responsive.bootstrap4.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/jquery-confirm/jquery-confirm.min.css') ?>
+    <?= link_tag(RESOURCE_PLUGINS . '/toastr/toastr.min.css') ?>
 
-    <?= link_tag(RES_BACKEND . '/css/adminlte.min.css') ?>
+    <?= link_tag(RESOURCES . '/css/adminlte.min.css') ?>
 </head>
 
 <body class="text-sm content-iframe">
@@ -119,23 +119,23 @@
         </section>
     </div>
 
-    <?= script_tag(RES_PLUGIN . '/jquery/jquery.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/bootstrap/js/bootstrap.bundle.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/moment/moment-with-locales.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/daterangepicker/daterangepicker.js') ?>
-    <?= script_tag(RES_PLUGIN . '/datatables/jquery.dataTables.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/datatables-bs4/js/dataTables.bootstrap4.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/datatables-responsive/js/dataTables.responsive.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/datatables-responsive/js/responsive.bootstrap4.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/gasparesganga-jquery-loading-overlay/loadingoverlay.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/jquery-confirm/jquery-confirm.min.js') ?>
-    <?= script_tag(RES_PLUGIN . '/toastr/toastr.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/jquery/jquery.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/bootstrap/js/bootstrap.bundle.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/moment/moment-with-locales.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/daterangepicker/daterangepicker.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/datatables/jquery.dataTables.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/datatables-bs4/js/dataTables.bootstrap4.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/datatables-responsive/js/dataTables.responsive.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/datatables-responsive/js/responsive.bootstrap4.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/gasparesganga-jquery-loading-overlay/loadingoverlay.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/jquery-confirm/jquery-confirm.min.js') ?>
+    <?= script_tag(RESOURCE_PLUGINS . '/toastr/toastr.min.js') ?>
 
-    <?= script_tag(RES_BACKEND . '/js/adminlte.min.js') ?>
+    <?= script_tag(RESOURCES . '/js/adminlte.min.js') ?>
 
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-global.js") ?>
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/config-list.js") ?>
-    <?= script_tag(BACKEND_JS_APP . "/v1.0.0/{$class}/{$class}ListView.js") ?>
+    <?= script_tag(APP_JS . '/config-global.js') ?>
+    <?= script_tag(APP_JS . '/config-list.js') ?>
+    <?= script_tag(APP_JS . "/{$class}/{$class}ListView.js") ?>
 </body>
 
 </html>
